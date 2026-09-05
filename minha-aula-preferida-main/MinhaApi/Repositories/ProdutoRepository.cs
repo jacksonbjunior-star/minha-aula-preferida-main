@@ -5,9 +5,9 @@ public class ProdutoRepository : IProdutoRepository
 {
     private readonly string _connectionString;
 
-      public ProdutoRepository(IConfiguration config) 
+    public ProdutoRepository(IConfiguration config) 
       => _connectionString = config.GetConnectionString("DefaultConnection")!;
-    private static List<Produto> _db = new()
+        private static List<Produto> _db = new()
     {
         new Produto { Id = 1, Nome = "Notebook", Preco = 2500m, Estoque = 10},
 
@@ -20,7 +20,7 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "SELECT id, nome, preco, estoque, ativo FROM produto";
+        string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos";
         using var cmd = new MySqlCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
 
