@@ -16,7 +16,7 @@ public class ClienteService : IClienteService
     public Cliente? GetById(int id)
         => _repo.GetById(id);
 
-    public  Cliente Create(Cliente cliente)
+    public Cliente Create(Cliente cliente)
     {
         if (string.IsNullOrWhiteSpace(cliente.Nome) || string.IsNullOrWhiteSpace(cliente.Email))
             throw new ArgumentException("Nome e email são obrigatórios");
@@ -24,10 +24,20 @@ public class ClienteService : IClienteService
         return cliente;
             
     }   
-    public  Cliente? Update(int id, cliente c)
+    public  Cliente? Update(int id, Cliente c)
     {
+        if(_repo.GetById(id) == null) return null;
+            c.Id = id;
+        _repo.Update(c);
+        return c;
         
-        
+    }
+    public bool Delete(int id)
+    {
+        if(_repo.GetById(id) == null) return false;
+            _repo.Delete(id);
+        return true;
+
     }
 
 }
