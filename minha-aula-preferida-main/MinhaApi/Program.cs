@@ -35,6 +35,16 @@ builder.Services.AddScoped<
     ClienteService>();    
 
 
+builder.Services.AddScoped<
+    IVendaRepository,
+    VendaRepository>();
+    
+builder.Services.AddScoped<
+    IVendaService,
+    VendaService>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
