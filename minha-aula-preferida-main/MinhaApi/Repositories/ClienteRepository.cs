@@ -23,7 +23,7 @@ public class ClienteRepository : IClienteRepository
             using var conn = new MySqlConnection(_connectionString);
             conn.Open();
 
-            string sql = "Select id, nome, email, cpf, ativo FROM clientes";
+            string sql = "Select id, nome, email, cpf, ativo FROM cliente";
             using var cmd = new MySqlCommand(sql, conn);
             using var reader = cmd.ExecuteReader();
 

@@ -20,7 +20,7 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "SELECT id, nome, preco, estoque, ativo FROM produto";
+        string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos";
         using var cmd = new MySqlCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
 
@@ -46,7 +46,7 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = @"INSERT INTO produto (nome, preco, estoque, ativo) 
+        string sql = @"INSERT INTO produtos (nome, preco, estoque, ativo) 
                     VALUES (@Nome, @Preco, @Estoque, @Ativo);
                     SELECT LAST_INSERT_ID();";
 
@@ -90,7 +90,7 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = @"UPDATE produto 
+        string sql = @"UPDATE produto
                         SET estoque = estoque - @Quantidade 
                         WHERE id = @Id AND estoque >= @Quantidade";
         using var cmd = new MySqlCommand(sql, conn);
