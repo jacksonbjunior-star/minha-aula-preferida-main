@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* 🖤❤️🤍 Cores do São Paulo */
+:root {
+  --spfc-vermelho: #FF0000;
+  --spfc-preto: #000000;
+  --spfc-branco: #FFFFFF;
+  --spfc-cinza-claro: #F5F5F5;
+  --spfc-cinza-escuro: #1A1A1A;
+}
+
+/* Estendendo o Tailwind com nossas cores */
+@theme {
+  --color-spfc-vermelho: #FF0000;
+  --color-spfc-preto: #000000;
+  --color-spfc-branco: #FFFFFF;
+  --color-spfc-cinza-claro: #F5F5F5;
+  --color-spfc-cinza-escuro: #1A1A1A;
+}
+
+/* Estilo base do corpo */
+body {
+  background-color: var(--spfc-cinza-claro);
+  color: var(--spfc-preto);
+  font-family: system-ui, -apple-system, sans-serif;
+}
