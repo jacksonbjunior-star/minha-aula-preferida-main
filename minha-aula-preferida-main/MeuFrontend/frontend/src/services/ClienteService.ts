@@ -1,0 +1,20 @@
+import api from './api'
+import type { Cliente, NovoCliente } from '../types/Cliente'
+
+export const clienteService = {
+  listar: async (): Promise<Cliente[]> => {
+    const { data } = await api.get('/cliente')
+    return data
+  },
+
+  criar: async (c: NovoCliente): Promise<Cliente> => {
+    const { data } = await api.post('/cliente', c)
+    return data
+  },
+
+  // 👇 ADICIONE ESTE MÉTODO AQUI
+  deletar: async (id: number): Promise<void> => {
+    // Ajuste a rota se o seu backend usar '/clientes' no plural
+    await api.delete(`/cliente/${id}`) 
+  }
+}
