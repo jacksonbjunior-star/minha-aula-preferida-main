@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import Sidebar from './components/SideBar'
+import { useState, useEffect } from 'react' // <-- Adicione useEffect aqui
+import Sidebar from './components/Sidebar'
 
 // Componentes de Produtos
 import ProdutoForm from './components/ProdutoForm'
@@ -46,11 +46,13 @@ function App() {
   }
 
   // Carrega os dados da tela ativa
-  useState(() => {
-    if (telaAtual === 'produtos') carregarProdutos()
-    else carregarClientes()
-  }) // Dica: em apps maiores, use useEffect com dependência [telaAtual]
-
+  useEffect(() => {
+    if (telaAtual === 'produtos') {
+      carregarProdutos()
+    } else {
+      carregarClientes()
+    }
+  }, [telaAtual]) // <-- O array [telaAtual] é OBRIGATÓRIO aqui!
   // Funções de Delete
   const handleDeleteProduto = async (id: number) => {
     if (!window.confirm('Excluir este produto?')) return
