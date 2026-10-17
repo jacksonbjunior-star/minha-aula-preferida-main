@@ -16,22 +16,34 @@ public class VendaRepository : IVendaRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = @"INSERT INTO venda (id_produto, id_cliente, data_venda, valor_Unitario, quantidade, total_venda)
-                        VALUES (@Id_Produto, @Id_Cliente, @Data_Venda, @Valor_Unitario, @Quantidade, @Total_Venda);
-                        SELECT LAST_INSERT_ID()";
+         string sqlPreco = "SELECT preco FROM produto WHERE id = @Id_Produto";
+    using var cmdPreco = new MySqlCommand(sqlPreco, conn);
+    cmdPreco.Parameters.AddWithValue("@Id_Produto", v.Id_Produto);
+    var precoObj = cmdPreco.ExecuteScalar();
+    
+    if (precoObj == null)
+        throw new Exception("Produto não encontrado.");
+    
+    decimal valorUnitario = Convert.ToDecimal(precoObj);
+    decimal totalVenda = valorUnitario * v.Quantidade;
 
-        using var cmd = new MySqlCommand(sql, conn);
 
-        cmd.Parameters.AddWithValue("@Id_Produto", v.Id_Produto);
-        cmd.Parameters.AddWithValue("@Id_Cliente", v.Id_Cliente);
-        cmd.Parameters.AddWithValue("@Data_Venda", v.Data_Venda);
-        cmd.Parameters.AddWithValue("@Valor_Unitario", v.Valor_Unitario);
-        cmd.Parameters.AddWithValue("@Quantidade", v.Quantidade);
-        cmd.Parameters.AddWithValue("@Total_Venda", v.Total_Venda);
+    string sql = @"INSERT INTO venda (id_produto, id_cliente, data_venda, valor_unitario, quantidade, total_venda)
+                   VALUES (@Id_Produto, @Id_Cliente, @Data_Venda, @Valor_Unitario, @Quantidade, @Total_Venda);
+                   SELECT LAST_INSERT_ID()";
 
-        var idGerado = cmd.ExecuteScalar();
-        v.Id = Convert.ToInt32(idGerado);
-    }
+    using var cmd = new MySqlCommand(sql, conn);
+    
+    cmd.Parameters.AddWithValue("@Id_Produto", v.Id_Produto);
+    cmd.Parameters.AddWithValue("@Id_Cliente", v.Id_Cliente);
+    cmd.Parameters.AddWithValue("@Data_Venda", DateTime.Now); 
+    cmd.Parameters.AddWithValue("@Valor_Unitario", valorUnitario);
+    cmd.Parameters.AddWithValue("@Quantidade", v.Quantidade);
+    cmd.Parameters.AddWithValue("@Total_Venda", totalVenda);
+
+    var idGerado = cmd.ExecuteScalar();
+    v.Id = Convert.ToInt32(idGerado);
+}
 
     public IEnumerable<Venda> GetAll()
     {
