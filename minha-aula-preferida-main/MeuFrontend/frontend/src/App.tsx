@@ -126,7 +126,11 @@ function App() {
               {erroClientes && <p className="bg-spfc-vermelho text-spfc-branco px-4 py-2 rounded-lg mb-4">{erroClientes}</p>}
               <ClienteList clientes={clientes} loading={loadingClientes} onDelete={handleDeleteCliente} />
             </>
+<<<<<<< HEAD
           ) : ( 
+=======
+          ) : (
+>>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
             // ✅ 4. NOVO: Tela de Vendas
             <>
               <h1 className="text-3xl font-bold text-spfc-preto border-b-4 border-spfc-vermelho pb-3 mb-8">
