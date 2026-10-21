@@ -19,14 +19,14 @@ import VendaList from './components/VendaList'
 import { vendaService } from './services/VendaService'
 import type { Venda } from './types/Venda'
 
-// ✅ NOVO: Componentes de Fornecedores
+// ✅ Componentes de Fornecedores
 import FornecedorForm from './components/FornecedorForm'
 import FornecedorList from './components/FornecedorList'
 import { fornecedorService } from './services/FornecedorService'
 import type { Fornecedor } from './types/Fornecedor'
 
 function App() {
-  // ✅ 1. Adicionado 'fornecedores' ao tipo
+  // 1. Estado da tela atual com todas as opções
   const [telaAtual, setTelaAtual] = useState<'produtos' | 'clientes' | 'vendas' | 'fornecedores'>('produtos')
 
   // Estados de Produtos
@@ -44,7 +44,7 @@ function App() {
   const [loadingVendas, setLoadingVendas] = useState(false)
   const [erroVendas, setErroVendas] = useState<string | null>(null)
 
-  // ✅ 2. NOVO: Estados de Fornecedores
+  // 2. Estados de Fornecedores
   const [fornecedores, setFornecedores] = useState<Fornecedor[]>([])
   const [loadingFornecedores, setLoadingFornecedores] = useState(false)
   const [erroFornecedores, setErroFornecedores] = useState<string | null>(null)
@@ -68,7 +68,7 @@ function App() {
     finally { setLoadingVendas(false) }
   }
 
-  // ✅ 3. NOVO: Função de Carregamento de Fornecedores
+  // 3. Função de Carregamento de Fornecedores
   const carregarFornecedores = async () => {
     try { 
       setLoadingFornecedores(true)
@@ -88,7 +88,7 @@ function App() {
     } else if (telaAtual === 'vendas') {
       carregarVendas()
     } else if (telaAtual === 'fornecedores') {
-      carregarFornecedores() // ✅ Chama a função de fornecedores
+      carregarFornecedores()
     }
   }, [telaAtual])
 
@@ -109,12 +109,12 @@ function App() {
     } catch { setErroClientes('Erro ao excluir cliente.') }
   }
 
-  // ✅ 4. NOVO: Função de Delete de Fornecedor
+  // 4. Função de Delete de Fornecedor
   const handleDeleteFornecedor = async (id: number) => {
     if (!window.confirm('Excluir este fornecedor?')) return
     try {
       await fornecedorService.deletar(id)
-      setFornecedores(prev => prev.filter(f => f.id !== id)) // Atualização otimista
+      setFornecedores(prev => prev.filter(f => f.id !== id))
     } catch { setErroFornecedores('Erro ao excluir fornecedor.') }
   }
 
@@ -142,6 +142,7 @@ function App() {
               <ClienteList clientes={clientes} loading={loadingClientes} onDelete={handleDeleteCliente} />
             </>
           ) : telaAtual === 'vendas' ? (
+            // ✅ Tela de Vendas (Limpa, sem marcadores de conflito)
             <>
               <h1 className="text-3xl font-bold text-spfc-preto border-b-4 border-spfc-vermelho pb-3 mb-8">Gestão de Vendas</h1>
               <VendaForm onVendaCriada={carregarVendas} />
@@ -150,7 +151,7 @@ function App() {
               <VendaList vendas={vendas} loading={loadingVendas} />
             </>
           ) : telaAtual === 'fornecedores' ? (
-            // ✅ 5. NOVO: Tela de Fornecedores
+            // ✅ Tela de Fornecedores
             <>
               <h1 className="text-3xl font-bold text-spfc-preto border-b-4 border-spfc-vermelho pb-3 mb-8">
                 Gestão de Fornecedores

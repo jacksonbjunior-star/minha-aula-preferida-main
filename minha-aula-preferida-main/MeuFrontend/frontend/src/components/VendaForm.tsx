@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import { vendaService } from '../services/VendaService'
+import { clienteService } from '../services/ClienteService'
+import { produtoService } from '../services/ProdutoService'
+import type { Cliente } from '../types/Cliente'
+import type { Produto } from '../types/Produto'
 
 interface Props {
   onVendaCriada: () => void
@@ -11,12 +15,44 @@ function VendaForm({ onVendaCriada }: Props) {
   const [quantidade, setQuantidade] = useState('')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
+<<<<<<< HEAD
+  const [valorTotal, setValorTotal] = useState<number | null>(null)
+  
+  const [clientes, setClientes] = useState<Cliente[]>([])
+  const [produtos, setProdutos] = useState<Produto[]>([])
+  const [loadingListas, setLoadingListas] = useState(true)
+
+  useEffect(() => {
+    const carregarListas = async () => {
+      try {
+        setLoadingListas(true)
+        const [listaClientes, listaProdutos] = await Promise.all([
+          clienteService.listar(),
+          produtoService.listar()
+        ])
+        setClientes(listaClientes)
+        setProdutos(listaProdutos)
+      } catch {
+        setErro('Erro ao carregar listas de clientes e produtos.')
+      } finally {
+        setLoadingListas(false)
+      }
+    }
+    carregarListas()
+  }, [])
+=======
   const [valorTotal, setValorTotal] = useState<number | null>(null) // 
+>>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setErro(null)
+<<<<<<< HEAD
+    setValorTotal(null)
+    
+=======
     setValorTotal(null) 
+>>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
     try {
       setLoading(true)
       const venda = await vendaService.realizarVenda({ 
@@ -24,7 +60,12 @@ function VendaForm({ onVendaCriada }: Props) {
         id_Produto: Number(idProduto),
         quantidade: Number(quantidade),
       })
+<<<<<<< HEAD
+      setValorTotal(venda.valor_Total) 
+    
+=======
       setValorTotal(venda.valorTotal)
+>>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
       setIdCliente('')
       setIdProduto('')
       setQuantidade('')
@@ -36,6 +77,97 @@ function VendaForm({ onVendaCriada }: Props) {
       setLoading(false)
     }
   }
+<<<<<<< HEAD
+
+  if (loadingListas) {
+    return <p>Carregando formulários...</p>
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-spfc-preto mb-4">Cadastrar Venda</h2>
+
+      {erro && (
+        <p className="bg-spfc-vermelho text-spfc-branco px-4 py-2 rounded-lg mb-4">
+          {erro}
+        </p>
+      )}
+
+      {valorTotal !== null && (
+        <p className="bg-green-100 text-green-800 px-4 py-2 rounded-lg mb-4 font-bold">
+          ✅ Venda realizada! Valor total: R$ {valorTotal.toFixed(2)}
+        </p>
+      )}
+
+      {/* ✅ Cliente: Select em vez de input manual */}
+      <div className="mb-4">
+        <label htmlFor="idCliente" className="block text-sm font-medium text-gray-700 mb-1">
+          Cliente
+        </label>
+        <select
+          id="idCliente"
+          value={idCliente}
+          onChange={e => setIdCliente(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spfc-vermelho focus:border-transparent"
+        >
+          <option value="">Selecione um cliente</option>
+          {clientes.map(cliente => (
+            <option key={cliente.id} value={cliente.id}>
+              {cliente.nome}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="idProduto" className="block text-sm font-medium text-gray-700 mb-1">
+          Produto
+        </label>
+        <select
+          id="idProduto"
+          value={idProduto}
+          onChange={e => setIdProduto(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spfc-vermelho focus:border-transparent"
+        >
+          <option value="">Selecione um produto</option>
+          {produtos.map(produto => (
+            <option key={produto.id} value={produto.id}>
+              {produto.nome} - R$ {produto.preco.toFixed(2)} 
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="quantidade" className="block text-sm font-medium text-gray-700 mb-1">
+          Quantidade
+        </label>
+        <input
+          id="quantidade"
+          type="number"
+          min="1"
+          step="1"
+          value={quantidade}
+          onChange={e => setQuantidade(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spfc-vermelho focus:border-transparent"
+        />
+      </div>
+
+      <button 
+        type="submit" 
+        disabled={loading}
+        className="w-full bg-spfc-vermelho text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+      >
+        {loading ? 'Realizando venda...' : 'Cadastrar Venda'}
+      </button>
+    </form>
+  )
+}
+
+=======
 return (
   <form onSubmit={handleSubmit}>
     <h2>Cadastrar Venda</h2>
@@ -96,4 +228,5 @@ return (
     </button>
   </form>
 )
+>>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
 export default VendaForm

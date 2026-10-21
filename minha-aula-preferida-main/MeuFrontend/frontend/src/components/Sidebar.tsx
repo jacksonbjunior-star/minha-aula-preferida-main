@@ -1,5 +1,5 @@
 interface Props {
-  // ✅ 1. Adicionado 'vendas' e 'fornecedores' aos tipos
+  // ✅ Tipos atualizados para incluir vendas e fornecedores
   telaAtual: 'produtos' | 'clientes' | 'vendas' | 'fornecedores'
   onChangeTela: (tela: 'produtos' | 'clientes' | 'vendas' | 'fornecedores') => void
 }
@@ -47,7 +47,7 @@ function Sidebar({ telaAtual, onChangeTela }: Props) {
           Clientes
         </button>
 
-        {/* ✅ 2. NOVO: Botão Vendas */}
+        {/* ✅ Botão Vendas */}
         <button
           onClick={() => onChangeTela('vendas')}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium ${getClasseBotao('vendas')}`}
@@ -58,7 +58,7 @@ function Sidebar({ telaAtual, onChangeTela }: Props) {
           Vendas
         </button>
 
-        {/* ✅ 3. NOVO: Botão Fornecedores */}
+        {/* ✅ Botão Fornecedores */}
         <button
           onClick={() => onChangeTela('fornecedores')}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium ${getClasseBotao('fornecedores')}`}
