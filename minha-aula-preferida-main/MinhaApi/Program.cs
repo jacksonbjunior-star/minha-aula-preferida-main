@@ -42,6 +42,14 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IVendaService,
     VendaService>();
+builder.Services.AddScoped<
+    IFornecedorService,
+    FornecedorService>();
+
+builder.Services.AddScoped<
+    IFornecedorRepository,
+    FornecedorRepository>();
+
 
 builder.Services.AddCors(options => {
     options.AddPolicy("FrontendPolicy", policy => {

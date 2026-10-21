@@ -12,7 +12,7 @@ export const clienteService = {
     return data
   },
 
-  // 👇 ADICIONE ESTE MÉTODO AQUI
+
   deletar: async (id: number): Promise<void> => {
     // Ajuste a rota se o seu backend usar '/clientes' no plural
     await api.delete(`/cliente/${id}`) 
