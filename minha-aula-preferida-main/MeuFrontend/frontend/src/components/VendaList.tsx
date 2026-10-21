@@ -30,17 +30,10 @@ function VendaList({ vendas, loading }: Props) {
               <td className="px-4 py-3 text-sm text-gray-900">{v.id_Produto}</td>
               <td className="px-4 py-3 text-sm text-gray-900">{v.quantidade}</td>
               <td className="px-4 py-3 text-sm font-bold text-green-700">
-<<<<<<< HEAD
                 R$ {v.valor_Total?.toFixed(2)}
               </td>
               <td className="px-4 py-3 text-sm text-gray-500">
                 {new Date(v.data_Venda).toLocaleDateString('pt-BR')}
-=======
-                R$ {v.valorTotal?.toFixed(2)}
-              </td>
-              <td className="px-4 py-3 text-sm text-gray-500">
-                {new Date(v.dataVenda).toLocaleDateString('pt-BR')}
->>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
               </td>
             </tr>
           ))}

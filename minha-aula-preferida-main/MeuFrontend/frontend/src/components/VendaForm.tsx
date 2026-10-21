@@ -15,7 +15,6 @@ function VendaForm({ onVendaCriada }: Props) {
   const [quantidade, setQuantidade] = useState('')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
-<<<<<<< HEAD
   const [valorTotal, setValorTotal] = useState<number | null>(null)
   
   const [clientes, setClientes] = useState<Cliente[]>([])
@@ -40,19 +39,12 @@ function VendaForm({ onVendaCriada }: Props) {
     }
     carregarListas()
   }, [])
-=======
-  const [valorTotal, setValorTotal] = useState<number | null>(null) // 
->>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setErro(null)
-<<<<<<< HEAD
     setValorTotal(null)
     
-=======
-    setValorTotal(null) 
->>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
     try {
       setLoading(true)
       const venda = await vendaService.realizarVenda({ 
@@ -60,12 +52,11 @@ function VendaForm({ onVendaCriada }: Props) {
         id_Produto: Number(idProduto),
         quantidade: Number(quantidade),
       })
-<<<<<<< HEAD
+      
+      // ⚠️ ATENÇÃO: Verifique se sua API retorna 'valorTotal' (camelCase) ou 'valor_Total' (snake_case).
+      // Se der erro ou mostrar 'undefined', mude para: setValorTotal(venda.valor_Total)
       setValorTotal(venda.valor_Total) 
     
-=======
-      setValorTotal(venda.valorTotal)
->>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
       setIdCliente('')
       setIdProduto('')
       setQuantidade('')
@@ -77,10 +68,9 @@ function VendaForm({ onVendaCriada }: Props) {
       setLoading(false)
     }
   }
-<<<<<<< HEAD
 
   if (loadingListas) {
-    return <p>Carregando formulários...</p>
+    return <p className="text-center p-4">Carregando formulários...</p>
   }
 
   return (
@@ -99,7 +89,7 @@ function VendaForm({ onVendaCriada }: Props) {
         </p>
       )}
 
-      {/* ✅ Cliente: Select em vez de input manual */}
+      {/* Cliente: Select em vez de input manual */}
       <div className="mb-4">
         <label htmlFor="idCliente" className="block text-sm font-medium text-gray-700 mb-1">
           Cliente
@@ -167,66 +157,4 @@ function VendaForm({ onVendaCriada }: Props) {
   )
 }
 
-=======
-return (
-  <form onSubmit={handleSubmit}>
-    <h2>Cadastrar Venda</h2>
-
-    {erro && (
-      <p style={{ color: 'red', backgroundColor: '#ffe0e0', padding: '10px', borderRadius: '4px' }}>
-        {erro}
-      </p>
-    )}
-
-    {valorTotal !== null && (
-      <p style={{ color: 'green', backgroundColor: '#e0ffe0', padding: '10px', borderRadius: '4px', fontWeight: 'bold' }}>
-        ✅ Venda realizada! Valor total: R$ {valorTotal.toFixed(2)}
-      </p>
-    )}
-
-    <div>
-      <label htmlFor="idCliente">ID do Cliente</label>
-      <input
-        id="idCliente"
-        type="text"
-        value={idCliente}
-        onChange={e => setIdCliente(e.target.value)}
-        required
-      />
-    </div>
-
-    {}
-    <div>
-      <label htmlFor="idProduto">ID do Produto</label>
-      <input
-        id="idProduto"
-        type="number"
-        min="1"
-        step="1"
-        value={idProduto}
-        onChange={e => setIdProduto(e.target.value)}
-        required
-      />
-    </div>
-
-    <div>
-      <label htmlFor="quantidade">Quantidade</label>
-      <input
-        id="quantidade"
-        type="number"
-        min="1"
-        step="1"
-        value={quantidade}
-        onChange={e => setQuantidade(e.target.value)}
-        required
-      />
-    </div>
-
-    {}
-    <button type="submit" disabled={loading}>
-      {loading ? 'Salvando...' : 'Cadastrar'}
-    </button>
-  </form>
-)
->>>>>>> 2a9d2b64445aa6dca96e305ba4564396b5c52058
 export default VendaForm
