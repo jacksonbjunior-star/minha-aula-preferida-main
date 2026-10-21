@@ -4,13 +4,13 @@ import { vendaService } from "../services/VendaService";
 import VendaForm from "../components/VendaForm";
 import VendaList from "../components/VendaList";
 
-
 function VendasPage() {
   const [vendas, setVendas] = useState<Venda[]>([]);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
-    const carregarListas = async () => {
+  // ✅ 1. Função de carregar (apenas a lógica)
+  const carregarListas = async () => {
     try {
       setLoading(true);
       setErro(null);
@@ -21,19 +21,22 @@ function VendasPage() {
     } finally {
       setLoading(false);
     }
-    useEffect(() => {
-      carregarListas();
-    }, []); 
+  };
 
-    return (
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold text-spfc-preto mb-6">Vendas</h1>
-        <VendaForm onVendaCriada={carregarListas} />
-        {erro && <p className="text-red-500 mt-4">{erro}</p>}
-        <VendaList vendas={vendas} loading={loading} />
-      </div>
-    );
-  }
+  // ✅ 2. useEffect no corpo do componente (fora da função)
+  useEffect(() => {
+    carregarListas();
+  }, []);
+
+  // ✅ 3. return também no corpo do componente
+  return (
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold text-spfc-preto mb-6">Vendas</h1>
+      <VendaForm onVendaCriada={carregarListas} />
+      {erro && <p className="text-red-500 mt-4">{erro}</p>}
+      <VendaList vendas={vendas} loading={loading} />
+    </div>
+  );
 }
 
-export default VendasPage
+export default VendasPage;
