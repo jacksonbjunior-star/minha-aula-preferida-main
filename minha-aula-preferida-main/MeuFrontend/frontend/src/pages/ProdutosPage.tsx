@@ -6,7 +6,8 @@ import ProdutoList from '../components/ProdutoList'
 
 function ProdutosPage() {
   const [produtos, setProdutos] = useState<Produto[]>([])         
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false) // Loading inicial da lista
+  const [deletingId, setDeletingId] = useState<number | null>(null) // Loading granular da exclusão
   const [erro, setErro] = useState<string | null>(null)
 
   const carregarProdutos = async () => {
@@ -16,7 +17,7 @@ function ProdutosPage() {
       const dados = await produtoService.listar()
       setProdutos(dados)
     } catch { 
-      setErro('Erro ao carregar produtos.') 
+      setErro('Erro ao carregar produtos. Verifique sua conexão.') 
     } finally { 
       setLoading(false) 
     }
@@ -26,34 +27,38 @@ function ProdutosPage() {
     carregarProdutos() 
   }, [])
 
-  // 👇 ADICIONE ESTA FUNÇÃO
   const handleDelete = async (id: number) => {
-    const confirmou = window.confirm('Tem certeza que deseja excluir este produto?')
-    if (!confirmou) return
-
     try {
-      setLoading(true)
+      setDeletingId(id) // Ativa o loading APENAS neste item
       setErro(null)
       await produtoService.deletar(id)
+      // Atualização otimista: remove o item da lista sem precisar recarregar tudo
       setProdutos((produtosAtuais) => produtosAtuais.filter((p) => p.id !== id))
     } catch (error) {
       console.error('Erro ao deletar:', error)
-      setErro('Não foi possível excluir o produto.')
+      setErro('Não foi possível excluir o produto. Tente novamente.')
     } finally {
-      setLoading(false)
+      setDeletingId(null) // Desativa o loading do item
     }
   }
 
   return (
-    <div>
-      <h1>Gestão de Produtos</h1>
-      <ProdutoForm onProdutoCriado={carregarProdutos} />
-      {erro && <p>{erro}</p>}
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-spfc-preto mb-8">Gestão de Produtos</h1>
       
-      {/* 👇 ADICIONE A PROP onDelete AQUI */}
+      {erro && (
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
+          <p className="font-bold">Atenção</p>
+          <p>{erro}</p>
+        </div>
+      )}
+
+      <ProdutoForm onProdutoCriado={carregarProdutos} />
+      
       <ProdutoList 
         produtos={produtos} 
         loading={loading} 
+        deletingId={deletingId}
         onDelete={handleDelete}
       />
     </div>

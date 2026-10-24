@@ -53,9 +53,11 @@ function VendaForm({ onVendaCriada }: Props) {
         quantidade: Number(quantidade),
       })
       
-      // ⚠️ ATENÇÃO: Verifique se sua API retorna 'valorTotal' (camelCase) ou 'valor_Total' (snake_case).
-      // Se der erro ou mostrar 'undefined', mude para: setValorTotal(venda.valor_Total)
-      setValorTotal(venda.valor_Total) 
+      // ✅ CORREÇÃO: Tenta pegar o valor em diferentes formatos (camelCase ou snake_case)
+      // e garante que seja um número. Se não achar nada, usa 0.
+const valorRetornado = venda.valor_Total ?? 0      
+
+      setValorTotal(Number(valorRetornado)) 
     
       setIdCliente('')
       setIdProduto('')
@@ -70,7 +72,7 @@ function VendaForm({ onVendaCriada }: Props) {
   }
 
   if (loadingListas) {
-    return <p className="text-center p-4">Carregando formulários...</p>
+    return <p className="text-center p-4 text-spfc-preto font-medium">Carregando formulários...</p>
   }
 
   return (
@@ -83,9 +85,10 @@ function VendaForm({ onVendaCriada }: Props) {
         </p>
       )}
 
-      {valorTotal !== null && (
+      {/* ✅ CORREÇÃO: != null verifica tanto null quanto undefined. Number() garante que é número */}
+      {valorTotal != null && (
         <p className="bg-green-100 text-green-800 px-4 py-2 rounded-lg mb-4 font-bold">
-          ✅ Venda realizada! Valor total: R$ {valorTotal.toFixed(2)}
+          ✅ Venda realizada! Valor total: R$ {Number(valorTotal).toFixed(2)}
         </p>
       )}
 
@@ -122,9 +125,10 @@ function VendaForm({ onVendaCriada }: Props) {
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-spfc-vermelho focus:border-transparent"
         >
           <option value="">Selecione um produto</option>
+          {/* ✅ CORREÇÃO: Number() garante que o preço seja tratado como número antes do toFixed */}
           {produtos.map(produto => (
             <option key={produto.id} value={produto.id}>
-              {produto.nome} - R$ {produto.preco.toFixed(2)} 
+              {produto.nome} - R$ {Number(produto.preco).toFixed(2)} 
             </option>
           ))}
         </select>

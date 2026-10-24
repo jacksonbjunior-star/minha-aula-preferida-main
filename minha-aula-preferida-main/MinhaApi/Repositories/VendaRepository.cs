@@ -11,12 +11,13 @@ public class VendaRepository : IVendaRepository
         _connectionString = config.GetConnectionString("DefaultConnection");
     }
 
-    public void Add (Venda v)
-    {
-        using var conn = new MySqlConnection(_connectionString);
-        conn.Open();
+    public void Add(Venda v)
+{
+    using var conn = new MySqlConnection(_connectionString);
+    conn.Open();
 
-         string sqlPreco = "SELECT preco FROM produto WHERE id = @Id_Produto";
+    // ✅ CORRIGIDO: "produtos" em vez de "produto"
+    string sqlPreco = "SELECT preco FROM produtos WHERE id = @Id_Produto";
     using var cmdPreco = new MySqlCommand(sqlPreco, conn);
     cmdPreco.Parameters.AddWithValue("@Id_Produto", v.Id_Produto);
     var precoObj = cmdPreco.ExecuteScalar();
@@ -26,7 +27,6 @@ public class VendaRepository : IVendaRepository
     
     decimal valorUnitario = Convert.ToDecimal(precoObj);
     decimal totalVenda = valorUnitario * v.Quantidade;
-
 
     string sql = @"INSERT INTO venda (id_produto, id_cliente, data_venda, valor_unitario, quantidade, total_venda)
                    VALUES (@Id_Produto, @Id_Cliente, @Data_Venda, @Valor_Unitario, @Quantidade, @Total_Venda);
@@ -44,7 +44,6 @@ public class VendaRepository : IVendaRepository
     var idGerado = cmd.ExecuteScalar();
     v.Id = Convert.ToInt32(idGerado);
 }
-
     public IEnumerable<Venda> GetAll()
     {
         var vendas = new List<Venda>();
